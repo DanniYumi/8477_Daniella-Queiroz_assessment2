@@ -1,78 +1,77 @@
-import React, {useState, useEffect} from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, FlatList } from 'react-native';
 import { useNavigation } from '@react-navigation/core';
 import { Logout } from './Logout';
 import { Logo } from './Logo';
 import { Footer } from './Footer';
-import { AddMovies } from './AddMovies';
 
-export function MoviesList(props){
-    const [user, setUser]=useState()
+
+export function MoviesList(props) {
+    const [user, setUser] = useState()
+    const [data, setData] = useState()
 
     const navigation = useNavigation()
 
-    navigation.setOptions({
-        headerRight:()=>(
-            <Logout handler={signOut} />
-        )
-    })
-    
-    useEffect( () => {
-        if( props.auth ) {
-          setUser( props.auth )
+    useEffect(() => {
+        if (props.auth) {
+            setUser(props.auth)
         }
         else {
-          setUser(null)
+            setUser(null)
         }
         navigation.setOptions({
-          headerRight: props => <Logout {...props} handler={signOut}/>
+            headerRight: props => <Logout {...props} handler={signOut} />
         })
-      })
-    
-    const signOut=() =>{
-        props.signout().then((result)=>{
-            if(result === true ){
-                navigation.reset({ index: 0, routes: [{ name: "Signin" }] })
-            }
-        })
-       .catch((error)=> console.log(error))
-    }
-    const Renderer = ({data}) => (
+    })
 
-      
-          <View>
-            <Text style={ListStyle.listText}>{data.title}</Text>
-            </View>
+    useEffect(() => {
+        setData(props.listdata)
+    }, [props.listdata])
+
+    const signOut = () => {
+        props.signout()
+            .then((result) => {
+                if (result === true) {
+                    navigation.reset({ index: 0, routes: [{ name: "Signin" }] })
+                }
+            })
+            .catch((error) => console.log(error))
+    }
+
+    const Renderer = ({ item }) => (
+        <View>
+            <Text style={ListStyles.listText}>{item.title}</Text>
+        </View>
     )
-   
-    return(
-        <View style={ListStyles.page}> 
-            <TouchableOpacity onPress={ signOut}>
-            </TouchableOpacity>
+
+    return (
+        <View style={ListStyles.page}>
+
             <Text style={ListStyles.headTitle}>Movies List</Text>
-            <Logo/>
-            <FlatList             
-            listdata={data}
-            read={readData}
-            renderList={ Renderer} 
-            keyExtractor={ data => data.id.toString()}/>
-            <Footer/>
+            <Logo />
+            <FlatList
+                data={data}
+                renderItem={Renderer}
+                keyExtractor={item => item.id} 
+            />
+            <Footer />
         </View>
     )
 }
-const ListStyles= StyleSheet.create({
 
-    page:{
+const ListStyles = StyleSheet.create({
+
+    page: {
         fontSize: 26,
         backgroundColor: '#faf7c7',
-        height:1000,
+        height: 1000,
     },
-    headTitle:{
+    headTitle: {
         fontSize: 26,
-        textAlign:'center',
-        marginTop:20,
-        marginBottom:20,
+        textAlign: 'center',
+        marginTop: 20,
+        marginBottom: 20,
         color: '#263e47',
     },
-   
+
 })
