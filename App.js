@@ -108,6 +108,7 @@ export default function App() {
       })
   }
 
+
   const Stack = createStackNavigator()
   return (
     <NavigationContainer>
@@ -134,6 +135,7 @@ export default function App() {
           {(props) => <MoviesList {...props} signout={HandleSignout}
             listdata={data}
             read={readData}
+
             auth={auth} />}
         </Stack.Screen>
       </Stack.Navigator>

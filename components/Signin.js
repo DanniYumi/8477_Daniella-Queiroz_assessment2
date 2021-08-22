@@ -127,6 +127,12 @@ const SigninStyles = StyleSheet.create({
         color: '#263e47',
         textAlign: 'center',
         fontSize: 20,
-        margin: 10
+        margin: 10,
+        padding:20,
+        margin: 10,
+        marginLeft: 40,
+        marginHorizontal: 40,
+        backgroundColor: "#ea96a1",
+        opacity: 0.7,
     }
 })
